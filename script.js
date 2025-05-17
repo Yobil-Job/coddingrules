@@ -1,3 +1,4 @@
+//cyber threat course demo
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Malicious script loaded!');
 
